@@ -47,8 +47,7 @@ def drawContours(capIn):
     blurred = cv2.GaussianBlur(grey, value, 0)
 
     # thresholding: Otsu's Binarization method
-    _, thresh1 = cv2.threshold(blurred, 127, 255,
-                               cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    _, thresh1 = cv2.threshold(blurred, 127, 255,cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
     contours, hierarchy = cv2.findContours(thresh1.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     contours_image = np.copy(img)
