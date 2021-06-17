@@ -354,3 +354,4 @@ time.sleep(2.0)
 # start the app
 pba = PhotoBoothApp(vs, "/output")
 pba.root.mainloop()
+
