@@ -54,10 +54,10 @@ def drawContours(capIn):
     contours_image = np.copy(img)
 
     # find contour with max area
-    cnt = max(contours, key=lambda x: cv2.contourArea(x))
-    cv2.drawContours(contours_image, cnt, -1, (255, 0, 255), 3)
+    maxContour = max(contours, key=lambda x: cv2.contourArea(x))
+    cv2.drawContours(contours_image, maxContour, -1, (255, 0, 255), 3)
 
-    return thresh1, contours_image, cnt
+    return thresh1, contours_image, maxContour
 
 
 def drawDefects(maxContour, img):
