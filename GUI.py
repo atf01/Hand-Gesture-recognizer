@@ -11,6 +11,7 @@ from imutils.video import VideoStream
 import argparse
 import time
 import numpy as np
+
 class PhotoBoothApp:
     def __init__(self, vs, outputPath):
         # store the video stream object and output path, then initialize
@@ -103,6 +104,7 @@ class PhotoBoothApp:
             # drawing contours
             drawing = np.zeros(crop_img.shape,np.uint8)
             cv2.drawContours(drawing, [cnt], 0, (0, 255, 0), 0)
+		
             cv2.drawContours(drawing, [hull], 0,(0, 0, 255), 0)
 
             # finding convex hull
@@ -113,8 +115,9 @@ class PhotoBoothApp:
             count_defects = 0
             cv2.drawContours(thresh1, contours, -1, (0, 255, 0), 3)
 
-            # applying Cosine Rule to find angle for all defects (between fingers)
-            # with angle > 90 degrees and ignore defects
+            # Apply Cos Law to find angle for all defects (between fingers)
+		
+            # with angle greater than 90 degrees and ignore defects
             for i in range(defects.shape[0]):
                 s,e,f,d = defects[i,0]
 
@@ -122,12 +125,13 @@ class PhotoBoothApp:
                 end = tuple(cnt[e][0])
                 far = tuple(cnt[f][0])
 
-                # find length of all sides of triangle
+                # find length of all edges of triangle
                 a = math.sqrt((end[0] - start[0])**2 + (end[1] - start[1])**2)
                 b = math.sqrt((far[0] - start[0])**2 + (far[1] - start[1])**2)
                 c = math.sqrt((end[0] - far[0])**2 + (end[1] - far[1])**2)
 
                 # apply cosine rule here
+		
                 angle = math.acos((b**2 + c**2 - a**2)/(2*b*c)) * 57
 
                 # ignore angles > 90 and highlight rest with red dots
@@ -139,6 +143,7 @@ class PhotoBoothApp:
                 # draw a line from start to end i.e. the convex points (finger tips)
                 # (can skip this part)
                 cv2.line(crop_img,start, end, [0,255,0], 2)
+		
                 #cv2.circle(crop_img,far,5,[0,0,255],-1)
 
             # define actions required
