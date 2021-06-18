@@ -1,4 +1,4 @@
-from searcher import Searcher
+from Searcher import Searcher
 from indexer import Indexer
 from utils import out, drawContours, drawDefects
 import cv2
