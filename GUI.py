@@ -16,6 +16,52 @@ import argparse
 import time
 import numpy as np
 print(os.path.dirname(os.path.abspath(__file__)))
+
+from csv_uitilts import *
+from tkinter import *
+from tkinter import messagebox as t
+from tkinter import filedialog as fd
+from tkinter import simpledialog
+
+def errormessage(str, event=None):
+    t.showerror("Error", str)
+
+
+
+
+
+
+
+
+
+
+
+def display_gestures():
+    new= Toplevel(pba.root)
+    new.title("display gestures stored")
+    scrollbar = Scrollbar(new)
+    scrollbar.pack( side = RIGHT, fill = Y )
+    mylist = Listbox(new, yscrollcommand = scrollbar.set )
+    mylist.pack( side = LEFT, fill = BOTH )
+    scrollbar.config( command = mylist.yview )
+    names=read_cv() 
+    formatted_names=[dataset_formatter(x) for x in names]    
+    for i in formatted_names: 
+       mylist.insert(END, i)
+
+
+def add_gesture():
+     imagePath = fd.askopenfilename()
+     img = cv2.imread(imagePath)
+     flag, features = out(img)
+     if  flag :
+         print(features)
+         USER_INP = simpledialog.askstring(title="GET Gesture",prompt="What's the Gesture name?:")
+         print( USER_INP)
+         append_cv(USER_INP,features)
+     else:
+         errormessage("ERROR IMAGE IS INVALID")
+
 class PhotoBoothApp:
     def __init__(self, vs, outputPath):
         self.vs = vs
@@ -36,8 +82,8 @@ class PhotoBoothApp:
         menu_bar.add_cascade(label='File', menu=file_menu)
         self.root.config(menu=menu_bar)
         self.InputImg = tki.Label(lf, bg='MistyRose3', relief=tki.RAISED ,bd=5,width=72,height=20)
-        tki.Button(lf,text="Gestures Stored",width=10,).grid(row=5,column=3)
-        tki.Button(lf,text="Add Gesture",width=10).grid(row=5,column=2)
+        tki.Button(lf,text="Gestures Stored",width=10,command=display_gestures).grid(row=5,column=3)
+        tki.Button(lf,text="Add Gesture",width=10,command=add_gesture).grid(row=5,column=2)
         self.RecogButton=tki.Button(lf,text="Start Recognition",width=15,command=self.startRecog)
         self.RecogButton.grid(row=5,column=1)
         OutputFrame = tki.LabelFrame(self.root,height='10', bd=2, text="Result", background='MistyRose', fg="gray14")
@@ -140,7 +186,6 @@ class PhotoBoothApp:
         self.root.quit()
 
 
-# construct the argument parse and parse the arguments
 # initialize the video stream and allow the camera sensor to warmup
 vs = cv2.VideoCapture(0)
 time.sleep(2.0)
