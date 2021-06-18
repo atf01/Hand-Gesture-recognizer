@@ -7,6 +7,7 @@ def dataset_formatter(text):
      #the 8 is indexc of dataset/
      dot_index=text.find(".")
      return(text[8:dot_index])
+# reading file.cv
 def read_cv():
   names=[]
   with open(os.path.join(str(cwd),'HAND.csv')) as csv_file:
@@ -21,7 +22,7 @@ def read_cv():
 
             line_count += 1
   return names
-
+# appending the data
 def append_cv(filename,features):
    modfied_filename="dataset/"+filename+"."# to adhere to the standared
    print(modfied_filename)
