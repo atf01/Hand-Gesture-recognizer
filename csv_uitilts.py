@@ -31,5 +31,4 @@ def append_cv(filename,features):
       output.write("%s,%s\n" % (modfied_filename, ",".join(featuresOut)))
 
 
-append_cv("datas.jpg",[12,5,3])
 
