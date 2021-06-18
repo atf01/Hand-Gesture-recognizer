@@ -11,6 +11,7 @@ from imutils.video import VideoStream
 import argparse
 import time
 import numpy as np
+from sys import exit
 
 class PhotoBoothApp:
     def __init__(self, vs, outputPath):
