@@ -9,13 +9,13 @@ import threading
 import datetime
 import imutils
 import cv2
-#import os
+import os
 import math
-#from imutils.video import VideoStream
+
 import argparse
 import time
 import numpy as np
-print(os.path.dirname(os.path.abspath(__file__)))
+
 
 from csv_uitilts import *
 from tkinter import *
@@ -33,7 +33,8 @@ def errormessage(str, event=None):
 
 
 
-
+def remove_number(s):
+	return ''.join([i for i in s if not i.isdigit()])
 
 
 def display_gestures():
@@ -45,7 +46,9 @@ def display_gestures():
     mylist.pack( side = LEFT, fill = BOTH )
     scrollbar.config( command = mylist.yview )
     names=read_cv() 
-    formatted_names=[dataset_formatter(x) for x in names]    
+    formatted_names=[dataset_formatter(x) for x in names]
+    formatted_names_no_numbers=[remove_number(x) for x in formatted_names]        
+    formatted_names=list(set(formatted_names_no_numbers))
     for i in formatted_names: 
        mylist.insert(END, i)
 
@@ -76,7 +79,7 @@ class PhotoBoothApp:
         inputframe = tki.Frame(lf)
         menu_bar = tki.Menu(self.root)
         file_menu = tki.Menu(menu_bar, tearoff=0)
-        file_menu.add_command(label='UpdateDB', accelerator='Alt+F4')
+
         file_menu.add_separator()
         file_menu.add_command(label='Exit', accelerator='Alt+F4', command=exit)
         menu_bar.add_cascade(label='File', menu=file_menu)
