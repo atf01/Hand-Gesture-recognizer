@@ -16,9 +16,7 @@ import argparse
 import time
 import numpy as np
 
-
 from csv_uitilts import *
-from tkinter import *
 from tkinter import messagebox as t
 from tkinter import filedialog as fd
 from tkinter import simpledialog
@@ -30,27 +28,24 @@ def errormessage(str, event=None):
 
 
 
-
-
-
 def remove_number(s):
 	return ''.join([i for i in s if not i.isdigit()])
 
 
 def display_gestures():
-    new= Toplevel(pba.root)
+    new= tki.Toplevel(pba.root)
     new.title("display gestures stored")
-    scrollbar = Scrollbar(new)
-    scrollbar.pack( side = RIGHT, fill = Y )
-    mylist = Listbox(new, yscrollcommand = scrollbar.set )
-    mylist.pack( side = LEFT, fill = BOTH )
+    scrollbar = tki.Scrollbar(new)
+    scrollbar.pack( side = tki.RIGHT, fill = tki.Y )
+    mylist = tki.Listbox(new, yscrollcommand = scrollbar.set )
+    mylist.pack( side = tki.LEFT, fill = tki.BOTH )
     scrollbar.config( command = mylist.yview )
     names=read_cv() 
     formatted_names=[dataset_formatter(x) for x in names]
     formatted_names_no_numbers=[remove_number(x) for x in formatted_names]        
     formatted_names=list(set(formatted_names_no_numbers))
     for i in formatted_names: 
-       mylist.insert(END, i)
+       mylist.insert(tki.END, i)
 
 
 def add_gesture():
