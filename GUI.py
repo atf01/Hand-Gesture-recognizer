@@ -83,7 +83,7 @@ class PhotoBoothApp:
         self.thread = threading.Thread(target=self.videoLoop, args=())
         self.threadState=False
         # set a callback to handle when the window is closed
-        self.root.wm_title("PyImageSearch PhotoBooth")
+        self.root.wm_title("Hand Gesture Recognition")
         self.root.resizable(False, False)
         self.root.wm_protocol("WM_DELETE_WINDOW", self.onClose)
         self.root.lift()
