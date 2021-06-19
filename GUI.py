@@ -57,6 +57,8 @@ def add_gesture():
          USER_INP = simpledialog.askstring(title="GET Gesture",prompt="What's the Gesture name?:")
          print( USER_INP)
          append_cv(USER_INP,features)
+         searcher = Searcher("HAND.csv")
+
      else:
          errormessage("ERROR IMAGE IS INVALID")
 
@@ -102,7 +104,7 @@ class PhotoBoothApp:
 
 
     def ShowTxt(self,Txt):
-	Txt=dataset_formatter(Txt)
+        Txt=dataset_formatter(Txt)
         Txt=remove_number(Txt)
         self.ResultImg.delete(1.0,tki.END)
         self.ResultImg.insert(tki.INSERT, Txt + '\n')
@@ -112,23 +114,24 @@ class PhotoBoothApp:
     def videoLoop(self):
             count=0
             try:
-                while True:
+                while self.vs.isOpened():
+                    #count+=1
                 # keep looping over frames until we are instructed to stop
                     if not self.stopEvent:
-                        # grab the frame from the video stream and resize it to
-                        # have a maximum width of 300 pixels
+                        Stop=True
+                        # grab the frame from the video stream 
                         _,self.frame = self.vs.read()
                         # read image
                         img =self.frame
-                        if count%40==0:
+                        if count%2==0:
+                            count=0
                             flag, features = out(img)
                             if  flag :
                                 #print(features)
                                 r = searcher.search(features)
                                 if float(r[0][0]) < 0.001 :
                                     self.ShowTxt(str(r[0][1]))
-                                #print(r[0][0])
-                        #cv2.imshow("Image", img)
+                                else:print(r[0][0]);print(r[0][1])
                         cv2.waitKey(1)
 
                         self.frame=imutils.resize(self.frame,width=580,height=350)
@@ -146,7 +149,10 @@ class PhotoBoothApp:
                         else:
                             self.panel.configure(image=image)
                             self.panel.image = image
-                    else: self.InputImg.configure(image="")
+                    else:
+                        if Stop:
+                            Stop=False
+                            self.InputImg.configure(image="")
 
             except RuntimeError as e:
                 print("[INFO] caught a RuntimeError")
@@ -169,20 +175,13 @@ class PhotoBoothApp:
                     self.threadState=True
                     self.thread.start()
                 self.RecogButton.config(text="Stop Recognition",width=15,command=self.stopRecog)
-                # grab t/he current timestamp and use it to construct the
-                # output path
-                #ts = datetime.datetime.now()
-                #filename = p+"hello{}.jpg".format(ts.strftime("%Y-%m-%d_%H-%M-%S"))
-                #p = os.path.sep.join((self.outputPath, filename))
-                #print(p)
-                # save the file
-                #cv2.imwrite(filename, self.frame.copy())
-                #print("[INFO] saved {}".format(filename))
+                
 
     def onClose(self):
         # set the stop event, cleanup the camera, and allow the rest of
         # the quit process to continue
         print("[INFO] closing...")
+        self.vs.release()
         self.stopEvent=True
         #sys.exit()
         self.root.quit()
