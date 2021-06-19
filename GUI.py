@@ -125,7 +125,8 @@ class PhotoBoothApp:
                             if  flag :
                                 #print(features)
                                 r = searcher.search(features)
-                                self.ShowTxt(str(r[0][1]))
+                                if float(r[0][0]) < 0.001 :
+                                    self.ShowTxt(str(r[0][1]))
                                 #print(r[0][0])
                         #cv2.imshow("Image", img)
                         cv2.waitKey(1)
