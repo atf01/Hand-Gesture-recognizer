@@ -14,3 +14,6 @@
 - support mobile verison of the app (facilitate the usage)
 - support web app and connect it to the mobile app
 - enhance the accuracy of our model
+
+## example of the hand gestures recognized:
+![alt text](vector-illustrations-hand-gestures-their-meanings-vector-hand-gestures-meanings-168705246.jpg)
