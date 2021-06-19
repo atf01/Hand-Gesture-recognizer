@@ -120,14 +120,3 @@ def out(cap):
 
     return True, np.absolute(features / np.linalg.norm(features))
 
-    #return True,[]
-#Indexer()
-searcher = Searcher("HAND.csv")
-#sys.exit()
-#print("cameraaaa")
-#cap = cv2.VideoCapture(0)
-#cap.set(cv2.CAP_PROP_POS_FRAMES, 5)
-#count=0
-
-# Indexer()
-# searcher = Searcher("HAND.csv")
