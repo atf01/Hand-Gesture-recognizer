@@ -102,8 +102,11 @@ class PhotoBoothApp:
 
 
     def ShowTxt(self,Txt):
+	Txt=dataset_formatter(Txt)
+        Txt=remove_number(Txt)
         self.ResultImg.delete(1.0,tki.END)
         self.ResultImg.insert(tki.INSERT, Txt + '\n')
+       
 
 
     def videoLoop(self):
