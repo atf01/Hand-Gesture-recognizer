@@ -48,20 +48,6 @@ def display_gestures():
        mylist.insert(tki.END, i)
 
 
-def add_gesture():
-     imagePath = fd.askopenfilename()
-     img = cv2.imread(imagePath)
-     flag, features = out(img)
-     if  flag :
-         print(features)
-         USER_INP = simpledialog.askstring(title="GET Gesture",prompt="What's the Gesture name?:")
-         print( USER_INP)
-         append_cv(USER_INP,features)
-         searcher = Searcher("HAND.csv")
-
-     else:
-         errormessage("ERROR IMAGE IS INVALID")
-
 class PhotoBoothApp:
     def __init__(self, vs, outputPath):
         self.vs = vs
@@ -76,14 +62,14 @@ class PhotoBoothApp:
         inputframe = tki.Frame(lf)
         menu_bar = tki.Menu(self.root)
         file_menu = tki.Menu(menu_bar, tearoff=0)
-
+        self.searcher=Searcher("HAND.csv")
         file_menu.add_separator()
         file_menu.add_command(label='Exit', accelerator='Alt+F4', command=exit)
         menu_bar.add_cascade(label='File', menu=file_menu)
         self.root.config(menu=menu_bar)
         self.InputImg = tki.Label(lf, bg='MistyRose3', relief=tki.RAISED ,bd=5,width=72,height=20)
         tki.Button(lf,text="Gestures Stored",width=10,command=display_gestures).grid(row=5,column=3)
-        tki.Button(lf,text="Add Gesture",width=10,command=add_gesture).grid(row=5,column=2)
+        tki.Button(lf,text="Add Gesture",width=10,command=self.add_gesture).grid(row=5,column=2)
         self.RecogButton=tki.Button(lf,text="Start Recognition",width=15,command=self.startRecog)
         self.RecogButton.grid(row=5,column=1)
         OutputFrame = tki.LabelFrame(self.root,height='10', bd=2, text="Result", background='MistyRose', fg="gray14")
@@ -109,6 +95,19 @@ class PhotoBoothApp:
         self.ResultImg.delete(1.0,tki.END)
         self.ResultImg.insert(tki.INSERT, Txt + '\n')
        
+    
+    def add_gesture(self):
+         imagePath = fd.askopenfilename()
+         img = cv2.imread(imagePath)
+         flag, features = out(img)
+         if  flag :
+             print(features)
+             USER_INP = simpledialog.askstring(title="GET Gesture",prompt="What's the Gesture name?:")
+             print( USER_INP)
+             append_cv(USER_INP,features)
+             self.searcher=Searcher("HAND.csv")
+         else:
+             errormessage("ERROR IMAGE IS INVALID")
 
 
     def videoLoop(self):
@@ -128,7 +127,7 @@ class PhotoBoothApp:
                             flag, features = out(img)
                             if  flag :
                                 #print(features)
-                                r = searcher.search(features)
+                                r = self.searcher.search(features)
                                 if float(r[0][0]) < 0.001 :
                                     self.ShowTxt(str(r[0][1]))
                                 else:print(r[0][0]);print(r[0][1])
@@ -185,7 +184,6 @@ class PhotoBoothApp:
         self.stopEvent=True
         #sys.exit()
         self.root.quit()
-
 
 # initialize the video stream and allow the camera sensor to warmup
 vs = cv2.VideoCapture(0)
