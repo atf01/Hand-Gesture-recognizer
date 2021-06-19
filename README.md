@@ -7,7 +7,7 @@
 - Abdelrahman Adel
 - Mohammed Essam
 ## Features:
-- Translation of 7 different hand gestures and sign languages into plain English text
+- Translation of 10 different hand gestures and sign languages into plain English text
 - possiblity of adding more gestures in the future without having to do it in development ( add gesture button )
 ## Future plans:
 - Supporting voice in addition to the text to facilitate the communicaiton 
